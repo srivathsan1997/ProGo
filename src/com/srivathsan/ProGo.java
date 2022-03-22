@@ -114,7 +114,7 @@ class Tasks
 	protected Date dueDate; //Task end date
 	protected enum taskStatus{Assigned, Started, Delayed, Closed}; //taskStatus mentions if the task is just assigned or started or delayed or closed
 	protected enum priority{High,Medium,Low}; //taskPriority is to mention the priority of the task. It can be high, medium or low. 
-	protected Milestones milestone; //milestone to which the task is associated in a project
+	protected String milestoneId; //milestone to which the task is associated in a project
 	
 	//Getter and Setter for taskName
 	public String getTaskName() {
@@ -162,11 +162,11 @@ class Tasks
 	}
 	
 	//Getter and Setter for milestone
-	public Milestones getMilestone() {
-		return milestone;
+	public String getMilestoneId() {
+		return milestoneId;
 	}
-	public void setMilestone(Milestones milestone) {
-		this.milestone = milestone;
+	public void setMilestoneId(String milestoneId) {
+		this.milestoneId = milestoneId;
 	}
 	
 }
@@ -175,9 +175,10 @@ class Users
 	protected String memberName;
 	protected String memberId;
 	protected enum position{intern,employee,leader,manager};
-	protected ArrayList<Tasks> tasksAssigned;
-	protected ArrayList<Issues> issuesAssigned;
+	protected ArrayList<Tasks> tasksAssigned = new ArrayList<Tasks>();
+	protected ArrayList<Issues> issuesAssigned = new ArrayList<Issues>();
 	protected Milestones milestone;
+	protected String teamId;
 	
 	//Getter and Setter for memberName
 	public String getMemberName() {
@@ -227,16 +228,154 @@ class Users
 		this.milestone = milestone;
 	}
 	
+	//Getter and Setter for team
+	public String getTeamId() {
+		return teamId;
+	}
+	public void setTeamId(String teamId) {
+		this.teamId = teamId;
+	}
 }
-class teams
+class Teams
 {
+	protected String teamName; //Name of the team
+	protected String teamId;
+	protected Users managerName; //Manager for the team
+	protected ArrayList<Users> members = new ArrayList<Users>(); //A team consists of many members. 
 	
+	//Getter and Setter for teamName
+	public String getTeamName() {
+		return teamName;
+	}
+	public void setTeamName(String teamName) {
+		this.teamName = teamName;
+	}
+	
+	//Getter and Setter for teamId
+	public String getTeamId() {
+		return teamId;
+	}
+	public void setTeamId(String teamId) {
+		this.teamId = teamId;
+	}
+	
+	//Getter and Setter for managerName 
+	public Users getManagerName() {
+		return managerName;
+	}
+	public void setManagerName(Users managerName) {
+		this.managerName = managerName;
+	}
+	
+	//Getter and Setter for members
+	public ArrayList<Users> getMembers() {
+		return members;
+	}
+	public void setMembers(ArrayList<Users> members) {
+		this.members = members;
+	}
+	//Method to extract a particular member
+	public Users getMember(int index)
+	{
+		return members.get(index);
+	}
 }
 class Milestones
 {
+	protected String milestoneName; //Name of the milestone
+	protected String milestoneId; //Identification for the milestone
+	protected ArrayList<Tasks> tasksAssociated; //Tasks associated to the milestone. A milestone may contain many tasks.  
+	protected Date milestoneStartDate; //Start date for the milestone
+	protected Date milestoneDueDate; //Due date for the milestone completion
 	
+	//Getter and Setter for milestoneName
+	public String getMilestoneName() {
+		return milestoneName;
+	}
+	public void setMilestoneName(String milestoneName) {
+		this.milestoneName = milestoneName;
+	}
+	
+	//Getter and Setter for milestoneId
+	public String getMilestoneId() {
+		return milestoneId;
+	}
+	public void setMilestoneId(String milestoneId) {
+		this.milestoneId = milestoneId;
+	}
+	
+	//Getter and Setter for tasksAssociated
+	public ArrayList<Tasks> getTasksAssociated() {
+		return tasksAssociated;
+	}
+	public void setTasksAssociated(ArrayList<Tasks> tasksAssociated) {
+		this.tasksAssociated = tasksAssociated;
+	}
+	public Tasks getTaskAssociated(int index) {
+		return tasksAssociated.get(index);
+	}
+	
+	//Getter and Setter for milestoneStartDate and milestoneDueDate
+	public Date getMilestoneStartDate() {
+		return milestoneStartDate;
+	}
+	public void setMilestoneStartDate(Date milestoneStartDate) {
+		this.milestoneStartDate = milestoneStartDate;
+	}
+	public Date getMilestoneDueDate() {
+		return milestoneDueDate;
+	}
+	public void setMilestoneDueDate(Date milestoneDueDate) {
+		this.milestoneDueDate = milestoneDueDate;
+	}
 }
 class Issues
 {
+	protected String issueTitle; //Title of the issue
+	protected String isssueId; //Issue Id for the issue.
+	protected String issueDescription; //Description for the issue
+	protected String issueTeamId; //Team ID to which the issue is associated with
+	protected String issueUserId; //User ID to whom the issue to assigned to
+	protected enum issueStatus{Assigned, InProgress, ToBeTested, Closed}; //Status of the issue
+	protected enum severity{ShowStopped, Critical, Major, Minor} //Severity of the issue
 	
+	//Getters and Setter for issueTitle
+	public String getIssueTitle() {
+		return issueTitle;
+	}
+	public void setIssueTitle(String issueTitle) {
+		this.issueTitle = issueTitle;
+	}
+	
+	//Getters and Setter for issueId
+	public String getIsssueId() {
+		return isssueId;
+	}
+	public void setIsssueId(String isssueId) {
+		this.isssueId = isssueId;
+	}
+	
+	//Getters and Setter for issueDescription
+	public String getIssueDescription() {
+		return issueDescription;
+	}
+	public void setIssueDescription(String issueDescription) {
+		this.issueDescription = issueDescription;
+	}
+	
+	//Getters and Setter for issueTeamId
+	public String getIssueTeamId() {
+		return issueTeamId;
+	}
+	public void setIssueTeamId(String issueTeamId) {
+		this.issueTeamId = issueTeamId;
+	}
+	
+	//Getters and Setter for issueUserId
+	public String getIssueUserId() {
+		return issueUserId;
+	}
+	public void setIssueUserId(String issueUserId) {
+		this.issueUserId = issueUserId;
+	}
 }
