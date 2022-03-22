@@ -12,4 +12,3 @@ A Project Management application whose objective is to assist the team in manage
 8. Along with it, we have **tasksAssociated** with the milestone as well in it. 
 9. To err is human and thus **Issues** are important aspects of any project. Issues consists of basic details like **title, description and ID**. Along with it, we also have the **team and user assignement** for the issue. 
 10. Like tasks, **issue** has its own **status** and **severity** set. 
-11. 
