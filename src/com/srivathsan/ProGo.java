@@ -103,8 +103,39 @@ class Projects
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
+	//Method to find the difference in days
+	public long getDifferenceDays(Date d1, Date d2) {
+	    long diff = d2.getTime() - d1.getTime();
+	    return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+	}
+	
+	//A simple method to check the project achievability by using the projects metrics like milestones and tasks
+	public Boolean checkProjectAchievability(Date startDate, Date dueDate, Projects P)
+	{
+		ArrayList<Milestones> milestones = P.getMilestones();
+		ArrayList<Tasks> tasks = P.getTasks();
+		long daysAvailability = getDifferenceDays(startDate, dueDate);
+		if(daysAvailability < 0)
+			return false;
+		if(daysAvailability > 0)
+		{
+			if(milestones.size()>10 && daysAvailability < 70)
+			{
+				return false;
+			}
+			else if(tasks.size()>50 && daysAvailability < 50)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 }
-class Tasks
+abstract class Tasks
 {
 	protected String taskName; //Name of the tasks
 	protected String taskId; //Identification Number for the task
@@ -168,7 +199,16 @@ class Tasks
 	public void setMilestoneId(String milestoneId) {
 		this.milestoneId = milestoneId;
 	}
-	
+	//Method to set dependancy task
+	public void setDependencyTask(String taskId, String dependentTaskId, Date dependentDueDate)
+	{
+		Dependency dependency = new Dependency(taskId,dependentTaskId,dependentDueDate);
+	}
+	//Method to adjust due date based on dependancy task
+	public abstract void adjustDueDate(Date taskDueDate, Date newDueDate, String reason);
+	public abstract void getTaskByPriority(String priority); //Method to get the tasks by priority
+	public abstract void getTaskbyStatus(String status); //Method to get the tasks by status
+	public abstract void getPendingTasks(Date dueDate); //Method to get the pending tasks which is executed by checking for the open tasks past its due date
 }
 class Users
 {
@@ -329,7 +369,7 @@ class Milestones
 		this.milestoneDueDate = milestoneDueDate;
 	}
 }
-class Issues
+abstract class Issues
 {
 	protected String issueTitle; //Title of the issue
 	protected String isssueId; //Issue Id for the issue.
@@ -377,5 +417,41 @@ class Issues
 	}
 	public void setIssueUserId(String issueUserId) {
 		this.issueUserId = issueUserId;
+	}
+	public abstract void getIssueByStatus(String status); //Method to get the issues by status
+	public abstract void getIssuebySeverity(String severity); //Method to get the issues by severity
+}
+class Dependency
+{
+	protected String taskId; //Task ID for whom there exists a dependant task
+	protected String dependentTaskId; //Task ID of the dependant task
+	protected Date dependentDueDate; //Due date for the dependant task
+	//Getter and Setter for Task ID
+	public String getTaskId() {
+		return taskId;
+	}
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
+	}
+	//Getter and Setter for Dependant Task ID
+	public String getDependentTaskId() {
+		return dependentTaskId;
+	}
+	public void setDependentTaskId(String dependentTaskId) {
+		this.dependentTaskId = dependentTaskId;
+	}
+	//Getter and Setter for Dependent due date
+	public Date getDependentDueDate() {
+		return dependentDueDate;
+	}
+	public void setDependentDueDate(Date dependentDueDate) {
+		this.dependentDueDate = dependentDueDate;
+	}
+	//Constructor for Dependency
+	public Dependency(String taskId, String dependentTaskId, Date dependentDueDate)
+	{
+		this.setTaskId(taskId);
+		this.setDependentTaskId(dependentTaskId);
+		this.setDependentDueDate(dependentDueDate);
 	}
 }
